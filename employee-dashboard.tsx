@@ -228,7 +228,7 @@ const EmployeeDashboard = () => {
   const totalCertifications = employees.reduce((acc, emp) => acc + emp.certifications, 0);
   
   // Department distribution
-  const departmentCounts = employees.reduce((acc, emp) => {
+  const departmentCounts = employees.reduce<Record<string, number>>((acc, emp) => {
     acc[emp.department] = (acc[emp.department] || 0) + 1;
     return acc;
   }, {});
