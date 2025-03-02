@@ -518,60 +518,82 @@ const EmployeeDashboard = () => {
                     >
                       <div className="relative">
                         <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="p-6">
-                          <div className="flex items-center">
-                            <div className="flex-shrink-0 relative">
-                              <div className="absolute -inset-0.5 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full blur-sm opacity-0 group-hover:opacity-70 transition-opacity" />
-                              <img
-                                src={employee.image}
-                                alt={employee.name}
-                                className="relative h-16 w-16 rounded-full object-cover border-2 border-white shadow-sm"
-                              />
-                              <div className={`absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white shadow ${
-                                employee.availability === 'Fully Staffed' ? 'bg-green-500' :
-                                employee.availability === 'Partially Staffed' ? 'bg-yellow-500' :
-                                'bg-blue-500'
-                              }`} />
+                        <div className="p-5">
+                          <div className="flex items-center justify-between">
+                            {/* Status Banner */}
+                            <div className={`absolute top-0 right-0 px-3 py-1 text-xs font-medium rounded-bl-lg ${
+                              employee.availability === 'Fully Staffed' ? 'bg-red-100 text-red-800' :
+                              employee.availability === 'Partially Staffed' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-green-100 text-green-800'
+                            }`}>
+                              {employee.availability === 'Fully Staffed' ? 'Staffed' :
+                               employee.availability === 'Partially Staffed' ? 'Partial' :
+                               'Available'}
                             </div>
-                            <div className="ml-4">
-                              <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">{employee.name}</p>
-                              <p className="text-xs text-gray-600">{employee.role}</p>
-                              <div className="flex items-center mt-1">
-                                <span className="text-xs font-medium text-gray-500">{employee.department}</span>
-                                <span className="mx-1 text-gray-300">•</span>
-                                <span className="text-xs font-medium text-gray-500">{employee.level}</span>
+
+                            {/* Employee Info */}
+                            <div className="flex items-start">
+                              <div className="flex-shrink-0 relative">
+                                <div className="absolute -inset-0.5 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full blur-sm opacity-0 group-hover:opacity-70 transition-opacity" />
+                                <img
+                                  src={employee.image}
+                                  alt={employee.name}
+                                  className="relative h-16 w-16 rounded-full object-cover border-2 border-white shadow-sm"
+                                />
+                              </div>
+                              <div className="ml-4">
+                                <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">{employee.name}</p>
+                                <p className="text-xs text-gray-600">{employee.role}</p>
+                                <div className="flex items-center mt-1">
+                                  <span className="text-xs font-medium text-gray-500">{employee.department}</span>
+                                  <span className="mx-1 text-gray-300">•</span>
+                                  <span className="text-xs font-medium text-gray-500">{employee.level}</span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          
-                          <div className="mt-5 space-y-3">
-                            <div className="flex justify-between items-center">
-                              <span className="text-xs text-gray-500">Chargeability</span>
-                              <span className={`text-xs font-medium ${
+
+                            {/* Chargeability Bar (Vertical) */}
+                            <div className="flex flex-col items-center justify-center ml-2">
+                              <div className="h-16 w-1.5 bg-gray-100 rounded-full relative">
+                                <div 
+                                  className={`absolute bottom-0 w-1.5 rounded-full ${
+                                    employee.chargeability >= 80 ? 'bg-green-500' : 
+                                    employee.chargeability >= 60 ? 'bg-yellow-500' : 
+                                    'bg-red-500'
+                                  }`} 
+                                  style={{ height: `${employee.chargeability}%` }}
+                                />
+                              </div>
+                              <span className={`mt-1 text-xs font-medium ${
                                 employee.chargeability >= 80 ? 'text-green-600' : 
                                 employee.chargeability >= 60 ? 'text-yellow-600' : 
                                 'text-red-600'
                               }`}>{employee.chargeability}%</span>
                             </div>
-                            <div className="w-full bg-gray-100 rounded-full h-1.5">
-                              <div 
-                                className={`h-1.5 rounded-full ${
-                                  employee.chargeability >= 80 ? 'bg-green-500' : 
-                                  employee.chargeability >= 60 ? 'bg-yellow-500' : 
-                                  'bg-red-500'
-                                }`} 
-                                style={{ width: `${employee.chargeability}%` }}
-                              />
-                            </div>
-                            
-                            <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                              <div className="flex items-center">
-                                <Briefcase className="h-3.5 w-3.5 text-gray-400" />
-                                <span className="ml-1.5 text-xs text-gray-600">{employee.activeProjects}/{employee.projects} Projects</span>
+                          </div>
+                          
+                          <div className="mt-4 pt-4 border-t border-gray-100">
+                            <div className="grid grid-cols-3 gap-2 text-center">
+                              <div className="px-2">
+                                <div className="flex flex-col items-center">
+                                  <Briefcase className="h-4 w-4 text-blue-500 mb-1" />
+                                  <span className="text-xs font-medium text-gray-700">{employee.activeProjects}</span>
+                                  <span className="text-xs text-gray-500">Projects</span>
+                                </div>
                               </div>
-                              <div className="flex items-center">
-                                <Award className="h-3.5 w-3.5 text-gray-400" />
-                                <span className="ml-1.5 text-xs text-gray-600">{employee.certifications} Certs</span>
+                              <div className="px-2 border-x border-gray-100">
+                                <div className="flex flex-col items-center">
+                                  <Book className="h-4 w-4 text-emerald-500 mb-1" />
+                                  <span className="text-xs font-medium text-gray-700">{employee.skills.length}</span>
+                                  <span className="text-xs text-gray-500">Skills</span>
+                                </div>
+                              </div>
+                              <div className="px-2">
+                                <div className="flex flex-col items-center">
+                                  <Award className="h-4 w-4 text-purple-500 mb-1" />
+                                  <span className="text-xs font-medium text-gray-700">{employee.certifications}</span>
+                                  <span className="text-xs text-gray-500">Certs</span>
+                                </div>
                               </div>
                             </div>
                           </div>
