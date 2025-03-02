@@ -3,7 +3,7 @@ import { Search, Calendar, Award, Briefcase, CheckCircle, AlertCircle, ArrowUpCi
   BookOpen, Book, Coffee, Star, User, Users, PieChart, BarChart2, 
   Layers, Filter, ChevronDown, Grid, List, TrendingUp, Clock } from 'lucide-react';
 
-// Define employee type
+// Define types
 interface Employee {
   id: number;
   name: string;
@@ -21,9 +21,51 @@ interface Employee {
   certifications: number;
 }
 
+interface DetailedEmployee {
+  id: number;
+  name: string;
+  role: string;
+  level: string;
+  department: string;
+  team: string;
+  manager: string;
+  location: string;
+  joinDate: string;
+  email: string;
+  phone: string;
+  image: string;
+  availability: {
+    status: string;
+    chargeability: number;
+    lastBenchDate: string;
+  };
+  projects: Array<{
+    id: number;
+    name: string;
+    timeline: string;
+    chargeability: number;
+    status: string;
+    client: string;
+  }>;
+  certifications: Array<{
+    id: number;
+    name: string;
+    issuer: string;
+    dateEarned: string;
+    validUntil: string;
+    logo: string;
+  }>;
+  skills: Array<{
+    id: number;
+    name: string;
+    level: string;
+    category: string;
+  }>;
+}
+
 const EmployeeDashboard = () => {
   // Sample data
-  const employees = [
+  const employees: Employee[] = [
     { 
       id: 1, 
       name: 'Sarah Johnson', 
@@ -154,7 +196,7 @@ const EmployeeDashboard = () => {
     }
   ];
 
-  const sampleEmployee = {
+  const sampleEmployee: DetailedEmployee = {
     id: 1,
     name: 'Sarah Johnson',
     role: 'Senior Developer',
@@ -252,7 +294,7 @@ const EmployeeDashboard = () => {
   }, {});
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<DetailedEmployee | null>(null);
   const [activeTab, setActiveTab] = useState('projects');
   const [viewMode, setViewMode] = useState('grid'); // grid or list
 
@@ -269,7 +311,7 @@ const EmployeeDashboard = () => {
   };
 
   // Skill level icons
-  const skillLevelIcons = {
+  const skillLevelIcons: Record<string, React.ReactNode> = {
     'Beginner': <Coffee size={16} />,
     'Intermediate': <Book size={16} />,
     'Advanced': <BookOpen size={16} />,
@@ -277,7 +319,7 @@ const EmployeeDashboard = () => {
   };
 
   // Skill level colors
-  const skillLevelColors = {
+  const skillLevelColors: Record<string, string> = {
     'Beginner': 'bg-blue-100 text-blue-800',
     'Intermediate': 'bg-green-100 text-green-800',
     'Advanced': 'bg-purple-100 text-purple-800',
@@ -285,7 +327,7 @@ const EmployeeDashboard = () => {
   };
 
   // Availability status colors
-  const availabilityColors = {
+  const availabilityColors: Record<string, string> = {
     'Fully Staffed': 'bg-green-100 text-green-800',
     'Partially Staffed': 'bg-yellow-100 text-yellow-800',
     'On Bench': 'bg-blue-100 text-blue-800'
