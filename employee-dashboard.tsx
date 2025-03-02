@@ -346,7 +346,7 @@ const EmployeeDashboard = () => {
 
   // Main dashboard view or employee detail view
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col"> {/* OUTER DIV START */}
       {/* Mobile menu button */}
       <button 
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -1038,7 +1038,7 @@ const EmployeeDashboard = () => {
           </div>
         )}
       </div>
-    </div>
+    </div> {/* OUTER DIV END */}
   );
 };
 
