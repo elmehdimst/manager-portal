@@ -3,6 +3,24 @@ import { Search, Calendar, Award, Briefcase, CheckCircle, AlertCircle, ArrowUpCi
   BookOpen, Book, Coffee, Star, User, Users, PieChart, BarChart2, 
   Layers, Filter, ChevronDown, Grid, List, TrendingUp, Clock } from 'lucide-react';
 
+// Define employee type
+interface Employee {
+  id: number;
+  name: string;
+  role: string;
+  department: string;
+  image: string;
+  level: string;
+  availability: string;
+  chargeability: number;
+  projects: number;
+  activeProjects: number;
+  skills: string[];
+  topSkill: string;
+  topSkillLevel: string;
+  certifications: number;
+}
+
 const EmployeeDashboard = () => {
   // Sample data
   const employees = [
@@ -234,7 +252,7 @@ const EmployeeDashboard = () => {
   }, {});
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('projects');
   const [viewMode, setViewMode] = useState('grid'); // grid or list
 
@@ -246,7 +264,7 @@ const EmployeeDashboard = () => {
   );
 
   // Function to handle employee selection
-  const handleEmployeeSelect = (employee) => {
+  const handleEmployeeSelect = (employee: Employee) => {
     setSelectedEmployee(sampleEmployee);
   };
 
