@@ -509,94 +509,128 @@ const EmployeeDashboard = () => {
               
               {/* Grid View */}
               {viewMode === 'grid' && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                   {filteredEmployees.map((employee) => (
                     <div 
                       key={employee.id}
-                      className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group"
+                      className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-md hover:border-blue-300 transition-all cursor-pointer"
                       onClick={() => handleEmployeeSelect(employee)}
                     >
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="p-5">
-                          <div className="flex items-center justify-between">
-                            {/* Status Banner */}
-                            <div className={`absolute top-0 right-0 px-3 py-1 text-xs font-medium rounded-bl-lg ${
-                              employee.availability === 'Fully Staffed' ? 'bg-red-100 text-red-800' :
-                              employee.availability === 'Partially Staffed' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-green-100 text-green-800'
-                            }`}>
-                              {employee.availability === 'Fully Staffed' ? 'Staffed' :
-                               employee.availability === 'Partially Staffed' ? 'Partial' :
-                               'Available'}
-                            </div>
+                      <div className="relative bg-white p-0 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+                        {/* Top status bar with gradient background */}
+                        <div className={`w-full h-2 ${
+                          employee.availability === 'On Bench' ? 'bg-gradient-to-r from-green-400 to-green-600' :
+                          employee.availability === 'Partially Staffed' ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' :
+                          'bg-gradient-to-r from-red-400 to-red-600'
+                        }`}></div>
 
-                            {/* Employee Info */}
-                            <div className="flex items-start">
-                              <div className="flex-shrink-0 relative">
-                                <div className="absolute -inset-0.5 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full blur-sm opacity-0 group-hover:opacity-70 transition-opacity" />
-                                <img
-                                  src={employee.image}
-                                  alt={employee.name}
-                                  className="relative h-16 w-16 rounded-full object-cover border-2 border-white shadow-sm"
-                                />
-                              </div>
-                              <div className="ml-4">
-                                <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">{employee.name}</p>
-                                <p className="text-xs text-gray-600">{employee.role}</p>
+                        <div className="p-5">
+                          {/* Header with employee info */}
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center">
+                              <img
+                                src={employee.image}
+                                alt={employee.name}
+                                className="h-16 w-16 rounded-full object-cover border-2 border-white shadow-md"
+                              />
+                              <div className="ml-3">
+                                <p className="font-semibold text-gray-900">{employee.name}</p>
+                                <p className="text-sm text-gray-600">{employee.role}</p>
                                 <div className="flex items-center mt-1">
-                                  <span className="text-xs font-medium text-gray-500">{employee.department}</span>
-                                  <span className="mx-1 text-gray-300">•</span>
-                                  <span className="text-xs font-medium text-gray-500">{employee.level}</span>
+                                  <span className="text-xs text-gray-500">{employee.department}</span>
+                                  <span className="mx-1">•</span>
+                                  <span className="text-xs text-gray-500">{employee.level}</span>
                                 </div>
                               </div>
                             </div>
 
-                            {/* Chargeability Bar (Vertical) */}
-                            <div className="flex flex-col items-center justify-center ml-2">
-                              <div className="h-16 w-1.5 bg-gray-100 rounded-full relative">
-                                <div 
-                                  className={`absolute bottom-0 w-1.5 rounded-full ${
-                                    employee.chargeability >= 80 ? 'bg-green-500' : 
-                                    employee.chargeability >= 60 ? 'bg-yellow-500' : 
-                                    'bg-red-500'
-                                  }`} 
-                                  style={{ height: `${employee.chargeability}%` }}
-                                />
-                              </div>
-                              <span className={`mt-1 text-xs font-medium ${
+                            {/* Status badge */}
+                            <div className={`px-3 py-1.5 rounded-full text-xs font-medium inline-flex items-center ${
+                              employee.availability === 'On Bench' ? 'bg-green-100 text-green-800' :
+                              employee.availability === 'Partially Staffed' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-red-100 text-red-800'
+                            }`}>
+                              <span className={`h-1.5 w-1.5 rounded-full mr-1.5 ${
+                                employee.availability === 'On Bench' ? 'bg-green-500' :
+                                employee.availability === 'Partially Staffed' ? 'bg-yellow-500' :
+                                'bg-red-500'
+                              }`}></span>
+                              {employee.availability === 'On Bench' ? 'Available' :
+                               employee.availability === 'Partially Staffed' ? 'Partial' :
+                               'Staffed'}
+                            </div>
+                          </div>
+
+                          {/* Chargeability section with circular progress */}
+                          <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg mb-4">
+                            <div>
+                              <p className="text-xs text-gray-500 mb-1">Chargeability</p>
+                              <p className={`text-lg font-bold ${
                                 employee.chargeability >= 80 ? 'text-green-600' : 
                                 employee.chargeability >= 60 ? 'text-yellow-600' : 
                                 'text-red-600'
-                              }`}>{employee.chargeability}%</span>
+                              }`}>
+                                {employee.chargeability}%
+                              </p>
+                            </div>
+                            <div className="relative h-12 w-12">
+                              <svg className="h-12 w-12" viewBox="0 0 36 36">
+                                <circle 
+                                  cx="18" 
+                                  cy="18" 
+                                  r="16" 
+                                  fill="none" 
+                                  stroke="#e5e7eb" 
+                                  strokeWidth="3"
+                                />
+                                <circle 
+                                  cx="18" 
+                                  cy="18" 
+                                  r="16" 
+                                  fill="none" 
+                                  stroke={
+                                    employee.chargeability >= 80 ? '#10b981' : 
+                                    employee.chargeability >= 60 ? '#f59e0b' : 
+                                    '#ef4444'
+                                  }
+                                  strokeWidth="3"
+                                  strokeDasharray={`${100.53 * employee.chargeability / 100} 100.53`}
+                                  strokeDashoffset="25.13"
+                                  strokeLinecap="round"
+                                />
+                              </svg>
                             </div>
                           </div>
                           
-                          <div className="mt-4 pt-4 border-t border-gray-100">
-                            <div className="grid grid-cols-3 gap-2 text-center">
-                              <div className="px-2">
-                                <div className="flex flex-col items-center">
-                                  <Briefcase className="h-4 w-4 text-blue-500 mb-1" />
-                                  <span className="text-xs font-medium text-gray-700">{employee.activeProjects}</span>
-                                  <span className="text-xs text-gray-500">Projects</span>
-                                </div>
+                          {/* Key metrics row */}
+                          <div className="grid grid-cols-3 gap-1">
+                            <div className="bg-blue-50 p-2 rounded-lg">
+                              <div className="flex flex-col items-center">
+                                <Briefcase className="h-5 w-5 text-blue-500 mb-1" />
+                                <span className="text-sm font-bold text-gray-800">{employee.activeProjects}</span>
+                                <span className="text-xs text-gray-500">Projects</span>
                               </div>
-                              <div className="px-2 border-x border-gray-100">
-                                <div className="flex flex-col items-center">
-                                  <Book className="h-4 w-4 text-emerald-500 mb-1" />
-                                  <span className="text-xs font-medium text-gray-700">{employee.skills.length}</span>
-                                  <span className="text-xs text-gray-500">Skills</span>
-                                </div>
+                            </div>
+                            <div className="bg-emerald-50 p-2 rounded-lg">
+                              <div className="flex flex-col items-center">
+                                <Book className="h-5 w-5 text-emerald-500 mb-1" />
+                                <span className="text-sm font-bold text-gray-800">{employee.skills.length}</span>
+                                <span className="text-xs text-gray-500">Skills</span>
                               </div>
-                              <div className="px-2">
-                                <div className="flex flex-col items-center">
-                                  <Award className="h-4 w-4 text-purple-500 mb-1" />
-                                  <span className="text-xs font-medium text-gray-700">{employee.certifications}</span>
-                                  <span className="text-xs text-gray-500">Certs</span>
-                                </div>
+                            </div>
+                            <div className="bg-purple-50 p-2 rounded-lg">
+                              <div className="flex flex-col items-center">
+                                <Award className="h-5 w-5 text-purple-500 mb-1" />
+                                <span className="text-sm font-bold text-gray-800">{employee.certifications}</span>
+                                <span className="text-xs text-gray-500">Certs</span>
                               </div>
                             </div>
                           </div>
+                          
+                          {/* View profile button */}
+                          <button className="w-full mt-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                            View Full Profile
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -613,11 +647,20 @@ const EmployeeDashboard = () => {
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Employee
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
                           Chargeability
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                          Projects
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
+                          Skills
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Action
                         </th>
                       </tr>
                     </thead>
@@ -626,39 +669,82 @@ const EmployeeDashboard = () => {
                         <tr 
                           key={employee.id} 
                           className="hover:bg-gray-50 cursor-pointer"
-                          onClick={() => handleEmployeeSelect(employee)}
                         >
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className="flex-shrink-0 h-10 w-10">
+                              <div className="flex-shrink-0 h-10 w-10 relative">
                                 <img className="h-10 w-10 rounded-full" src={employee.image} alt="" />
+                                <div className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${
+                                  employee.availability === 'On Bench' ? 'bg-green-500' :
+                                  employee.availability === 'Partially Staffed' ? 'bg-yellow-500' :
+                                  'bg-red-500'
+                                }`}></div>
                               </div>
                               <div className="ml-4">
                                 <div className="text-sm font-medium text-gray-900">{employee.name}</div>
                                 <div className="text-sm text-gray-500">{employee.role} • {employee.level}</div>
-                                <div className="text-sm text-gray-500">{employee.department}</div>
+                                <div className="text-xs text-gray-500 sm:hidden">
+                                  {employee.availability === 'On Bench' ? 'Available' :
+                                   employee.availability === 'Partially Staffed' ? 'Partial' :
+                                   'Staffed'} • {employee.chargeability}%
+                                </div>
                               </div>
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${availabilityColors[employee.availability]}`}>
-                              {employee.availability}
-                            </span>
+                          <td className="px-6 py-4 whitespace-nowrap hidden sm:table-cell">
+                            <div className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
+                              employee.availability === 'On Bench' ? 'bg-green-100 text-green-800' :
+                              employee.availability === 'Partially Staffed' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-red-100 text-red-800'
+                            }`}>
+                              <span className={`h-1.5 w-1.5 rounded-full mr-1.5 ${
+                                employee.availability === 'On Bench' ? 'bg-green-500' :
+                                employee.availability === 'Partially Staffed' ? 'bg-yellow-500' :
+                                'bg-red-500'
+                              }`}></span>
+                              {employee.availability === 'On Bench' ? 'Available' :
+                               employee.availability === 'Partially Staffed' ? 'Partial' :
+                               'Staffed'}
+                            </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <td className="px-6 py-4 whitespace-nowrap hidden md:table-cell">
                             <div className="flex items-center">
-                              <div className="w-24 bg-gray-200 rounded-full h-1.5 mr-2">
+                              <div className="w-24 bg-gray-100 rounded-full h-2 mr-2">
                                 <div 
-                                  className={`h-1.5 rounded-full ${
-                                    employee.chargeability >= 80 ? 'bg-green-600' : 
+                                  className={`h-2 rounded-full ${
+                                    employee.chargeability >= 80 ? 'bg-green-500' : 
                                     employee.chargeability >= 60 ? 'bg-yellow-500' : 
                                     'bg-red-500'
                                   }`} 
                                   style={{ width: `${employee.chargeability}%` }}
                                 />
                               </div>
-                              <span className="text-sm text-gray-900">{employee.chargeability}%</span>
+                              <span className={`text-sm font-medium ${
+                                employee.chargeability >= 80 ? 'text-green-600' : 
+                                employee.chargeability >= 60 ? 'text-yellow-600' : 
+                                'text-red-600'
+                              }`}>{employee.chargeability}%</span>
                             </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                            <div className="flex items-center">
+                              <Briefcase className="h-4 w-4 text-blue-500 mr-1.5" />
+                              <span className="text-sm text-gray-700">{employee.activeProjects} active</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap hidden xl:table-cell">
+                            <div className="flex items-center">
+                              <Book className="h-4 w-4 text-emerald-500 mr-1.5" />
+                              <span className="text-sm text-gray-700">{employee.skills.length} skills</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button 
+                              onClick={() => handleEmployeeSelect(employee)}
+                              className="text-blue-600 hover:text-blue-900"
+                            >
+                              View
+                            </button>
                           </td>
                         </tr>
                       ))}
