@@ -346,7 +346,7 @@ const EmployeeDashboard = () => {
 
   // Main dashboard view or employee detail view
   return (
-    <div className="h-screen bg-gray-50 relative overflow-hidden">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Mobile menu button */}
       <button 
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -388,10 +388,12 @@ const EmployeeDashboard = () => {
       )}
 
       {/* Main Content */}
-      <div className={`flex-1 overflow-auto ml-0 lg:ml-72 transition-all duration-300`}>
-        {!selectedEmployee ? (
-          /* Dashboard View */
-          <div className="p-6 max-w-7xl mx-auto">
+      <div className={`w-full flex-1 min-h-screen overflow-y-auto ml-0 lg:ml-72 transition-all duration-300`}>
+        <div className="relative">
+          {!selectedEmployee ? (
+            /* Dashboard View */
+            <div className="p-5 md:p-6 pb-24 max-w-7xl mx-auto">
+            
             <div className="flex items-center justify-between mb-8 mt-8 lg:mt-0">
               <h1 className="text-3xl font-bold text-gray-900 ml-10 lg:ml-0">Employee Dashboard</h1>
               <div className="flex space-x-2">
@@ -756,7 +758,7 @@ const EmployeeDashboard = () => {
           </div>
         ) : (
           /* Employee Detail View */
-          <div className="p-6 max-w-6xl mx-auto">
+          <div className="p-5 md:p-6 pb-24 max-w-6xl mx-auto">
             {/* Back Button */}
             <button 
               onClick={() => setSelectedEmployee(null)}
