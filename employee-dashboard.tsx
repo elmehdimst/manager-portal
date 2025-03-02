@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Calendar, Award, Briefcase, CheckCircle, AlertCircle, ArrowUpCircle, 
   BookOpen, Book, Coffee, Star, User, Users, PieChart, BarChart2, 
-  Layers, Filter, ChevronDown, Grid, List, TrendingUp, Clock } from 'lucide-react';
+  Layers, Filter, ChevronDown, Grid, List, TrendingUp, Clock, Menu, X } from 'lucide-react';
 
 // Define types
 interface Employee {
@@ -342,62 +342,58 @@ const EmployeeDashboard = () => {
     return acc;
   }, {}) || {};
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   // Main dashboard view or employee detail view
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar - Always visible */}
-      <div className="w-72 bg-gray-900 flex flex-col z-10">
+    <div className="h-screen bg-gray-50 relative overflow-hidden">
+      {/* Mobile menu button */}
+      <button 
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-900 text-white shadow-lg lg:hidden"
+      >
+        {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+      </button>
+
+      {/* Sidebar - Hamburger on mobile */}
+      <div className={`fixed inset-y-0 left-0 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out w-72 bg-gray-900 flex flex-col z-20 h-full`}>
         <div className="p-6 border-b border-gray-800 flex items-center">
           <div className="h-10 w-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
             <Users className="h-6 w-6 text-white" />
           </div>
           <h1 className="text-xl font-bold text-white">Talent Manager</h1>
         </div>
-        <div className="flex-1 overflow-y-auto py-4">
+        <div className="flex-1 overflow-y-auto py-6">
           <div className="px-4 py-2">
             <button 
-              onClick={() => setSelectedEmployee(null)}
+              onClick={() => {
+                setSelectedEmployee(null);
+                setSidebarOpen(false);
+              }}
               className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg text-sm font-medium transition-colors flex items-center"
             >
               <Users className="mr-2 h-5 w-5" />
               Dashboard
             </button>
           </div>
-          <div className="mt-6 px-6">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
-              Overview
-            </h3>
-            <div className="space-y-4">
-              <div className="bg-gray-800 rounded-lg p-4">
-                <div className="flex items-center text-sm text-gray-300">
-                  <Users className="mr-3 h-5 w-5 text-blue-400" />
-                  <span className="font-medium">{totalEmployees} Total Employees</span>
-                </div>
-                <div className="mt-2 text-xs text-gray-400">
-                  Active workforce across departments
-                </div>
-              </div>
-              <div className="bg-gray-800 rounded-lg p-4">
-                <div className="flex items-center text-sm text-gray-300">
-                  <Clock className="mr-3 h-5 w-5 text-blue-400" />
-                  <span className="font-medium">{onBenchEmployees} On Bench</span>
-                </div>
-                <div className="mt-2 text-xs text-gray-400">
-                  {onBenchPercentage}% of total workforce
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
+      
+      {/* Overlay to close sidebar on mobile */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-10 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
+      <div className={`flex-1 overflow-auto ml-0 lg:ml-72 transition-all duration-300`}>
         {!selectedEmployee ? (
           /* Dashboard View */
           <div className="p-6 max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <h1 className="text-3xl font-bold text-gray-900">Employee Dashboard</h1>
+            <div className="flex items-center justify-between mb-8 mt-8 lg:mt-0">
+              <h1 className="text-3xl font-bold text-gray-900 ml-10 lg:ml-0">Employee Dashboard</h1>
               <div className="flex space-x-2">
                 <button className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg flex items-center text-sm font-medium transition-colors">
                   <Filter className="h-4 w-4 mr-2" />
@@ -656,10 +652,10 @@ const EmployeeDashboard = () => {
             {/* Back Button */}
             <button 
               onClick={() => setSelectedEmployee(null)}
-              className="flex items-center text-blue-600 hover:text-blue-800 mb-6"
+              className="flex items-center text-blue-600 hover:text-blue-800 mb-6 mt-8 lg:mt-0 ml-10 lg:ml-0"
             >
               <ChevronDown className="h-4 w-4 transform -rotate-90 mr-1" />
-              <span>Back to Home</span>
+              <span>Back to Dashboard</span>
             </button>
             
             {/* Employee Card */}
