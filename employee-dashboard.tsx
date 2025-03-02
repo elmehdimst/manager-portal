@@ -292,7 +292,7 @@ const EmployeeDashboard = () => {
   };
 
   // Group skills by category when an employee is selected
-  const skillsByCategory = selectedEmployee?.skills.reduce((acc, skill) => {
+  const skillsByCategory = selectedEmployee?.skills.reduce<Record<string, any[]>>((acc, skill) => {
     if (!acc[skill.category]) {
       acc[skill.category] = [];
     }
